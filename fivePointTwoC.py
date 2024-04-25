@@ -2,7 +2,6 @@ from tkinter import *
 import tkinter.font
 
 import RPi.GPIO as GPIO
-exited = False
 GPIO.setmode(GPIO.BOARD)
 ## Hardware 
 
@@ -36,13 +35,10 @@ green = Label(win, text="Green")
 
 ### EVENT FUNCTIONS
 def exitProgram():
-    global exited
-    if not exited:
-        pwm_yellow.stop()
-        pwm_blue.stop()
-        pwm_green.stop()
-        GPIO.cleanup()
-        exited = True
+    pwm_yellow.stop()
+    pwm_blue.stop()
+    pwm_green.stop()
+    GPIO.cleanup()
     exit()
 
 win.protocol("WM_DELETE_WINDOW", exitProgram)
@@ -54,11 +50,13 @@ def updateBlue(dutyCycle):
 def updateGreen(dutyCycle):
     pwm_green.ChangeDutyCycle(int(dutyCycle))
 
+##More Widget initializing
 exitButton['command'] = exitProgram
 yellowSlider['command'] = updateyellow
 blueSlider['command'] = updateBlue
 greenSlider['command'] = updateGreen
 
+##Arranging widgets in window
 green.grid(row=1, column=1)
 greenSlider.grid(row=0, column=1)
 
@@ -69,4 +67,5 @@ yellow.grid(row=5, column=1)
 yellowSlider.grid(row=4, column=1)
 
 exitButton.grid(row=6, column=1)
+
 
